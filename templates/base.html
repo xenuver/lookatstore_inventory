@@ -312,6 +312,9 @@
     <!-- Modal Container for HTMX Modal Popups -->
     <div id="modal-container" class="relative z-50"></div>
     
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+    
     <!-- JS Logic -->
     <script>
         // Init Lucide Icons
@@ -372,6 +375,88 @@
                 }, 200);
             }
         }
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            // Toast element wrapper
+            const toast = document.createElement('div');
+            // Starts off-screen (translate-x-full) and transparent (opacity-0)
+            toast.className = 'flex items-start w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-100 p-4 transition-all duration-300 transform translate-x-full opacity-0 pointer-events-auto';
+            
+            // Set styles based on type
+            let iconColor = 'text-emerald-500 bg-emerald-50 border-emerald-100/50';
+            let iconName = 'check-circle-2';
+            let typeLabel = 'Berhasil';
+            
+            if (type === 'error') {
+                iconColor = 'text-rose-500 bg-rose-50 border-rose-100/50';
+                iconName = 'alert-triangle';
+                typeLabel = 'Error';
+            } else if (type === 'info') {
+                iconColor = 'text-blue-500 bg-blue-50 border-blue-100/50';
+                iconName = 'info';
+                typeLabel = 'Info';
+            } else if (type === 'warning') {
+                iconColor = 'text-amber-500 bg-amber-50 border-amber-100/50';
+                iconName = 'alert-circle';
+                typeLabel = 'Peringatan';
+            }
+
+            toast.innerHTML = `
+                <div class="inline-flex items-center justify-center flex-shrink-0 w-9 h-9 ${iconColor} rounded-xl border">
+                    <i data-lucide="${iconName}" class="w-5 h-5"></i>
+                </div>
+                <div class="ms-3 flex-1 pt-0.5">
+                    <p class="text-sm font-semibold text-slate-900">${typeLabel}</p>
+                    <p class="text-xs text-slate-500 mt-0.5">${message}</p>
+                </div>
+                <button type="button" class="ms-3 bg-transparent text-slate-400 hover:text-slate-900 rounded-lg p-1 hover:bg-slate-100 inline-flex items-center justify-center h-6 w-6 cursor-pointer transition-colors" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            `;
+
+            // Append toast to container
+            container.appendChild(toast);
+            
+            // Initialize Lucide icons on the new element
+            if (window.lucide) {
+                window.lucide.createIcons({
+                    nodeList: toast.querySelectorAll('[data-lucide]')
+                });
+            }
+
+            // Trigger enter animation after a short delay
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            }, 50);
+
+            // Auto dismiss function
+            const dismiss = () => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            };
+
+            // Set auto-dismiss timer (4 seconds)
+            let dismissTimer = setTimeout(dismiss, 4000);
+
+            // Manual close button listener
+            toast.querySelector('button').addEventListener('click', () => {
+                clearTimeout(dismissTimer);
+                dismiss();
+            });
+        }
+
+        // Register custom event listener for HTMX
+        document.body.addEventListener('showToast', function(evt) {
+            const { message, type } = evt.detail;
+            showToast(message, type);
+        });
     </script>
 </body>
 </html>

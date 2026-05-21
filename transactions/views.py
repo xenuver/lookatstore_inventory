@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+import json
 from .models import BarangMasuk, BarangKeluar, StockLedger
 from .forms import BarangMasukForm, BarangKeluarForm
 
@@ -45,7 +46,13 @@ def masuk_create(request):
                 bm.save(user=request.user)
                 form.save_m2m()
                 response = HttpResponse(status=204)
-                response['HX-Trigger'] = 'masukListChanged'
+                response['HX-Trigger'] = json.dumps({
+                    'masukListChanged': None,
+                    'showToast': {
+                        'message': 'Transaksi barang masuk berhasil dicatat!',
+                        'type': 'success'
+                    }
+                })
                 return response
             except ValidationError as e:
                 form.add_error(None, e)
@@ -68,7 +75,13 @@ def masuk_update(request, pk):
                 bm.save(user=request.user)
                 form.save_m2m()
                 response = HttpResponse(status=204)
-                response['HX-Trigger'] = 'masukListChanged'
+                response['HX-Trigger'] = json.dumps({
+                    'masukListChanged': None,
+                    'showToast': {
+                        'message': f"Transaksi masuk untuk '{bm.barang.nama_produk}' berhasil diubah!",
+                        'type': 'success'
+                    }
+                })
                 return response
             except ValidationError as e:
                 form.add_error(None, e)
@@ -85,9 +98,16 @@ def masuk_update(request, pk):
 def masuk_delete(request, pk):
     bm = get_object_or_404(BarangMasuk, pk=pk)
     if request.method == 'POST':
+        nama_produk = bm.barang.nama_produk
         bm.delete(user=request.user)
         response = HttpResponse(status=204)
-        response['HX-Trigger'] = 'masukListChanged'
+        response['HX-Trigger'] = json.dumps({
+            'masukListChanged': None,
+            'showToast': {
+                'message': f"Transaksi masuk untuk '{nama_produk}' berhasil dihapus!",
+                'type': 'success'
+            }
+        })
         return response
         
     return render(request, 'transactions/masuk_delete_confirm_modal.html', {'transaction': bm})
@@ -132,7 +152,13 @@ def keluar_create(request):
                 bk.save(user=request.user)
                 form.save_m2m()
                 response = HttpResponse(status=204)
-                response['HX-Trigger'] = 'keluarListChanged'
+                response['HX-Trigger'] = json.dumps({
+                    'keluarListChanged': None,
+                    'showToast': {
+                        'message': 'Transaksi barang keluar berhasil dicatat!',
+                        'type': 'success'
+                    }
+                })
                 return response
             except ValidationError as e:
                 form.add_error(None, e)
@@ -155,7 +181,13 @@ def keluar_update(request, pk):
                 bk.save(user=request.user)
                 form.save_m2m()
                 response = HttpResponse(status=204)
-                response['HX-Trigger'] = 'keluarListChanged'
+                response['HX-Trigger'] = json.dumps({
+                    'keluarListChanged': None,
+                    'showToast': {
+                        'message': f"Transaksi keluar untuk '{bk.barang.nama_produk}' berhasil diubah!",
+                        'type': 'success'
+                    }
+                })
                 return response
             except ValidationError as e:
                 form.add_error(None, e)
@@ -172,9 +204,16 @@ def keluar_update(request, pk):
 def keluar_delete(request, pk):
     bk = get_object_or_404(BarangKeluar, pk=pk)
     if request.method == 'POST':
+        nama_produk = bk.barang.nama_produk
         bk.delete(user=request.user)
         response = HttpResponse(status=204)
-        response['HX-Trigger'] = 'keluarListChanged'
+        response['HX-Trigger'] = json.dumps({
+            'keluarListChanged': None,
+            'showToast': {
+                'message': f"Transaksi keluar untuk '{nama_produk}' berhasil dihapus!",
+                'type': 'success'
+            }
+        })
         return response
         
     return render(request, 'transactions/keluar_delete_confirm_modal.html', {'transaction': bk})

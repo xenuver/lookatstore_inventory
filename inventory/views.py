@@ -157,7 +157,13 @@ def barang_create(request):
         if form.is_valid():
             form.save()
             response = HttpResponse(status=204)
-            response['HX-Trigger'] = 'barangListChanged'
+            response['HX-Trigger'] = json.dumps({
+                'barangListChanged': None,
+                'showToast': {
+                    'message': 'Barang berhasil ditambahkan!',
+                    'type': 'success'
+                }
+            })
             return response
     else:
         form = BarangForm()
@@ -172,7 +178,13 @@ def barang_update(request, pk):
         if form.is_valid():
             form.save()
             response = HttpResponse(status=204)
-            response['HX-Trigger'] = 'barangListChanged'
+            response['HX-Trigger'] = json.dumps({
+                'barangListChanged': None,
+                'showToast': {
+                    'message': f"Barang '{barang.nama_produk}' berhasil diubah!",
+                    'type': 'success'
+                }
+            })
             return response
     else:
         form = BarangForm(instance=barang)
@@ -187,9 +199,16 @@ def barang_update(request, pk):
 def barang_delete(request, pk):
     barang = get_object_or_404(Barang, pk=pk)
     if request.method == 'POST':
+        nama_produk = barang.nama_produk
         barang.delete()
         response = HttpResponse(status=204)
-        response['HX-Trigger'] = 'barangListChanged'
+        response['HX-Trigger'] = json.dumps({
+            'barangListChanged': None,
+            'showToast': {
+                'message': f"Barang '{nama_produk}' berhasil dihapus!",
+                'type': 'success'
+            }
+        })
         return response
         
     return render(request, 'inventory/barang_delete_confirm_modal.html', {'barang': barang})
@@ -214,7 +233,13 @@ def kategori_create(request):
         if form.is_valid():
             form.save()
             response = HttpResponse(status=204)
-            response['HX-Trigger'] = 'kategoriListChanged'
+            response['HX-Trigger'] = json.dumps({
+                'kategoriListChanged': None,
+                'showToast': {
+                    'message': 'Kategori berhasil ditambahkan!',
+                    'type': 'success'
+                }
+            })
             return response
     else:
         form = KategoriForm()
@@ -228,7 +253,13 @@ def kategori_update(request, pk):
         if form.is_valid():
             form.save()
             response = HttpResponse(status=204)
-            response['HX-Trigger'] = 'kategoriListChanged'
+            response['HX-Trigger'] = json.dumps({
+                'kategoriListChanged': None,
+                'showToast': {
+                    'message': f"Kategori '{kategori.nama}' berhasil diubah!",
+                    'type': 'success'
+                }
+            })
             return response
     else:
         form = KategoriForm(instance=kategori)
@@ -238,9 +269,16 @@ def kategori_update(request, pk):
 def kategori_delete(request, pk):
     kategori = get_object_or_404(Kategori, pk=pk)
     if request.method == 'POST':
+        nama_kategori = kategori.nama
         kategori.delete()
         response = HttpResponse(status=204)
-        response['HX-Trigger'] = 'kategoriListChanged'
+        response['HX-Trigger'] = json.dumps({
+            'kategoriListChanged': None,
+            'showToast': {
+                'message': f"Kategori '{nama_kategori}' berhasil dihapus!",
+                'type': 'success'
+            }
+        })
         return response
     return render(request, 'inventory/kategori_delete_confirm_modal.html', {'kategori': kategori})
 
@@ -264,7 +302,13 @@ def supplier_create(request):
         if form.is_valid():
             form.save()
             response = HttpResponse(status=204)
-            response['HX-Trigger'] = 'supplierListChanged'
+            response['HX-Trigger'] = json.dumps({
+                'supplierListChanged': None,
+                'showToast': {
+                    'message': 'Supplier berhasil ditambahkan!',
+                    'type': 'success'
+                }
+            })
             return response
     else:
         form = SupplierForm()
@@ -278,7 +322,13 @@ def supplier_update(request, pk):
         if form.is_valid():
             form.save()
             response = HttpResponse(status=204)
-            response['HX-Trigger'] = 'supplierListChanged'
+            response['HX-Trigger'] = json.dumps({
+                'supplierListChanged': None,
+                'showToast': {
+                    'message': f"Supplier '{supplier.nama}' berhasil diubah!",
+                    'type': 'success'
+                }
+            })
             return response
     else:
         form = SupplierForm(instance=supplier)
@@ -288,9 +338,16 @@ def supplier_update(request, pk):
 def supplier_delete(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
     if request.method == 'POST':
+        nama_supplier = supplier.nama
         supplier.delete()
         response = HttpResponse(status=204)
-        response['HX-Trigger'] = 'supplierListChanged'
+        response['HX-Trigger'] = json.dumps({
+            'supplierListChanged': None,
+            'showToast': {
+                'message': f"Supplier '{nama_supplier}' berhasil dihapus!",
+                'type': 'success'
+            }
+        })
         return response
     return render(request, 'inventory/supplier_delete_confirm_modal.html', {'supplier': supplier})
 
