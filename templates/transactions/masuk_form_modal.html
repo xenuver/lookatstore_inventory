@@ -106,7 +106,7 @@
     }, 10);
     
     // Set default date to today if creating new
-    const dateInput = document.querySelector('input[type="date"]');
+    const dateInput = document.getElementById('id_tanggal');
     if (dateInput && !dateInput.value) {
         const today = new Date().toISOString().split('T')[0];
         dateInput.value = today;

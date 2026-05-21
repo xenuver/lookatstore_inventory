@@ -15,10 +15,13 @@ class BarangMasukForm(forms.ModelForm):
         model = BarangMasuk
         fields = ['tanggal', 'barang', 'jumlah', 'supplier', 'keterangan']
         widgets = {
-            'tanggal': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm',
-            }),
+            'tanggal': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'type': 'date',
+                    'class': 'block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm',
+                }
+            ),
             'barang': forms.Select(attrs={
                 'class': 'block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm',
             }),
@@ -40,10 +43,13 @@ class BarangKeluarForm(forms.ModelForm):
         model = BarangKeluar
         fields = ['tanggal', 'barang', 'jumlah', 'keterangan']
         widgets = {
-            'tanggal': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm',
-            }),
+            'tanggal': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'type': 'date',
+                    'class': 'block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm',
+                }
+            ),
             'barang': forms.Select(attrs={
                 'class': 'block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm',
             }),
