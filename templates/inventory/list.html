@@ -16,22 +16,22 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </span>
-                    <input type="text" name="q" value="{{ query }}"
+                    <input type="text" name="q" id="barang-search-input" value="{{ query }}"
                            hx-get="{% url 'inventory:barang_list' %}"
                            hx-trigger="keyup changed delay:300ms, search"
                            hx-target="#barang-table"
-                           hx-include="[name='kategori'], [name='stok_alert']"
+                           hx-include="#barang-kategori-filter, #barang-stok-filter"
                            class="block w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm"
                            placeholder="Cari nama atau kode...">
                 </div>
 
                 <!-- Category Filter -->
                 <div>
-                    <select name="kategori"
+                    <select name="kategori" id="barang-kategori-filter"
                             hx-get="{% url 'inventory:barang_list' %}"
                             hx-trigger="change"
                             hx-target="#barang-table"
-                            hx-include="[name='q'], [name='stok_alert']"
+                            hx-include="#barang-search-input, #barang-stok-filter"
                             class="block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm">
                         <option value="">Semua Kategori</option>
                         {% for cat in kategori_choices %}
@@ -42,11 +42,11 @@
 
                 <!-- Stock Level Alert Filter -->
                 <div>
-                    <select name="stok_alert"
+                    <select name="stok_alert" id="barang-stok-filter"
                             hx-get="{% url 'inventory:barang_list' %}"
                             hx-trigger="change"
                             hx-target="#barang-table"
-                            hx-include="[name='q'], [name='kategori']"
+                            hx-include="#barang-search-input, #barang-kategori-filter"
                             class="block w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm">
                         <option value="">Semua Status Stok</option>
                         <option value="critical" {% if stok_alert == 'critical' %}selected{% endif %}>Stok Kritis (≤ Min)</option>
@@ -76,7 +76,7 @@
          id="barang-table"
          hx-get="{% url 'inventory:barang_list' %}"
          hx-trigger="barangListChanged from:body"
-         hx-include="[name='q'], [name='kategori'], [name='stok_alert']">
+         hx-include="#barang-search-input, #barang-kategori-filter, #barang-stok-filter">
         {% include 'inventory/barang_table_fragment.html' %}
     </div>
 </div>

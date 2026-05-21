@@ -16,11 +16,11 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </span>
-                    <input type="text" name="q" value="{{ query }}"
+                    <input type="text" name="q" id="masuk-search-input" value="{{ query }}"
                            hx-get="{% url 'transactions:masuk_list' %}"
                            hx-trigger="keyup changed delay:300ms, search"
                            hx-target="#masuk-table"
-                           hx-include="[name='start_date'], [name='end_date']"
+                           hx-include="#masuk-start-date, #masuk-end-date"
                            class="block w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm"
                            placeholder="Cari produk atau supplier...">
                 </div>
@@ -30,11 +30,11 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                         <i data-lucide="calendar" class="w-4 h-4"></i>
                     </span>
-                    <input type="date" name="start_date" value="{{ start_date }}"
+                    <input type="date" name="start_date" id="masuk-start-date" value="{{ start_date }}"
                            hx-get="{% url 'transactions:masuk_list' %}"
                            hx-trigger="change"
                            hx-target="#masuk-table"
-                           hx-include="[name='q'], [name='end_date']"
+                           hx-include="#masuk-search-input, #masuk-end-date"
                            class="block w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm">
                 </div>
 
@@ -43,11 +43,11 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                         <i data-lucide="calendar" class="w-4 h-4"></i>
                     </span>
-                    <input type="date" name="end_date" value="{{ end_date }}"
+                    <input type="date" name="end_date" id="masuk-end-date" value="{{ end_date }}"
                            hx-get="{% url 'transactions:masuk_list' %}"
                            hx-trigger="change"
                            hx-target="#masuk-table"
-                           hx-include="[name='q'], [name='start_date']"
+                           hx-include="#masuk-search-input, #masuk-start-date"
                            class="block w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition-all text-sm">
                 </div>
             </form>
@@ -74,7 +74,7 @@
          id="masuk-table"
          hx-get="{% url 'transactions:masuk_list' %}"
          hx-trigger="masukListChanged from:body"
-         hx-include="[name='q'], [name='start_date'], [name='end_date']">
+         hx-include="#masuk-search-input, #masuk-start-date, #masuk-end-date">
         {% include 'transactions/masuk_table_fragment.html' %}
     </div>
 </div>

@@ -16,7 +16,7 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </span>
-                    <input type="text" name="q" value="{{ query }}"
+                    <input type="text" name="q" id="kategori-search-input" value="{{ query }}"
                            hx-get="{% url 'inventory:kategori_list' %}"
                            hx-trigger="keyup changed delay:300ms, search"
                            hx-target="#kategori-table"
@@ -43,7 +43,7 @@
          id="kategori-table"
          hx-get="{% url 'inventory:kategori_list' %}"
          hx-trigger="kategoriListChanged from:body"
-         hx-include="[name='q']">
+         hx-include="#kategori-search-input">
         {% include 'inventory/kategori_table_fragment.html' %}
     </div>
 </div>
