@@ -81,8 +81,8 @@ Sistem informasi ini dilengkapi dengan fitur premium modern yang dirancang untuk
 ```mermaid
 graph TD
     A[Transaksi Baru: Masuk/Keluar] --> B{Validasi Stok?}
-    B -- Barang Keluar > Stok --> C[Tolak Transaksi / ValidationError]
-    B -- Valid -- D[Simpan Transaksi Masuk/Keluar]
+    B -->|Barang Keluar > Stok| C[Tolak Transaksi / ValidationError]
+    B -->|Valid| D[Simpan Transaksi Masuk/Keluar]
     D --> E[Update Stok di Model Barang]
     E --> F[Trigger Pembuatan StockLedger]
     F --> G[Log Audit Tercatat: Stok Awal -> Stok Akhir]
